@@ -11,6 +11,8 @@ const client = new Client({
     database: 'announcments'
 })
 
+client.connect()
+
 const SELECT_ALL_USERS_QUERY = 'SELECT * FROM users'
 
 module.exports = {
@@ -21,7 +23,7 @@ module.exports = {
 
 async function authenticate({ username, password }) {
 
-    const user = client.connect().then(() => client.query(SELECT_ALL_USERS_QUERY))
+    const user = client.query(SELECT_ALL_USERS_QUERY)
                         .then(results => {
                             return results.rows.find(u => u.username === username && u.password === password);
                         })
@@ -40,7 +42,7 @@ async function authenticate({ username, password }) {
 }
 
 async function getAll() {
-    return client.connect().then(() => client.query(SELECT_ALL_USERS_QUERY))
+    return client.query(SELECT_ALL_USERS_QUERY)
                             .then(results => {
                                 return results.rows.map(u => omitPassword(u));
                             })
