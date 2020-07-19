@@ -8,7 +8,8 @@ const bodyParser = require('body-parser');
 const jwt = require('./../_helpers/jwt');
 const errorHandler = require('./../_helpers/error-handler');
 
-const userRoutes  = require('./../users/users.controller');
+const userRoutes  = require('./Controllers/usersController');
+const tasksRoutes  = require('./Controllers/tasksController');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -22,6 +23,7 @@ app.use(jwt());
 
 // api routes
 app.use('/users', userRoutes);
+app.use('/tasks', tasksRoutes);
 
 // global error handler
 app.use(errorHandler);

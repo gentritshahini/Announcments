@@ -1,15 +1,10 @@
-const config = require('config.json');
+const config = require('../../config.json');
 const jwt = require('jsonwebtoken');
-const pool = require('./../server/db');
 
+const pool = require('../db')
 pool.connect()
 
 const SELECT_ALL_USERS_QUERY = 'SELECT * FROM users'
-
-module.exports = {
-    authenticate,
-    getAll
-};
 
 
 async function authenticate({ username, password }) {
@@ -47,3 +42,8 @@ function omitPassword(user) {
     const { password, ...userWithoutPassword } = user;
     return userWithoutPassword;
 }
+
+module.exports = {
+    authenticate,
+    getAll
+};
