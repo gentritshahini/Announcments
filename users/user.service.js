@@ -1,17 +1,8 @@
 const config = require('config.json');
 const jwt = require('jsonwebtoken');
+const pool = require('./../server/db');
 
-const { Client } = require('pg');
-
-const client = new Client({
-    user: 'postgres',
-    password: '123456',
-    host: 'localhost',
-    port: 5432,
-    database: 'announcments'
-})
-
-client.connect()
+pool.connect()
 
 const SELECT_ALL_USERS_QUERY = 'SELECT * FROM users'
 
@@ -23,12 +14,12 @@ module.exports = {
 
 async function authenticate({ username, password }) {
 
-    const user = client.query(SELECT_ALL_USERS_QUERY)
+    const user = pool.query(SELECT_ALL_USERS_QUERY)
                         .then(results => {
                             return results.rows.find(u => u.username === username && u.password === password);
                         })
                         .catch(e => console.log(e))
-                        .finally(() => client.end)
+                        .finally(() => pool.end)
 
     if (!user) throw 'Username or password is incorrect';
 
@@ -42,12 +33,12 @@ async function authenticate({ username, password }) {
 }
 
 async function getAll() {
-    return client.query(SELECT_ALL_USERS_QUERY)
+    return pool.query(SELECT_ALL_USERS_QUERY)
                             .then(results => {
                                 return results.rows.map(u => omitPassword(u));
                             })
                             .catch(e => console.log(e))
-                            .finally(() => client.end)
+                            .finally(() => pool.end)
 }
 
 // helper functions

@@ -2,15 +2,20 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const bodyParser = require('body-parser');
-const jwt = require('_helpers/jwt');
-const errorHandler = require('_helpers/error-handler');
 
-const userRoutes  = require('./users/users.controller');
+
+const bodyParser = require('body-parser');
+const jwt = require('./../_helpers/jwt');
+const errorHandler = require('./../_helpers/error-handler');
+
+const userRoutes  = require('./../users/users.controller');
 
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+
+//middleware
 app.use(cors());
+app.use(bodyParser.json());
+
 
 // use JWT auth to secure the api
 app.use(jwt());
